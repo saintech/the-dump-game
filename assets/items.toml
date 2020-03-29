@@ -1,0 +1,120 @@
+# A dummy item for example/test purposes only
+[dummy]
+map_object.name = "Dummy"
+item.kind = {"Ranged" = "SlingshotAmmo"}
+symbol.glyph = "\u00FF"
+symbol.color = { r = 79, g = 119, b = 84 }
+equipment.slot = "Hands" # equipment component is optional
+equipment.max_hp_bonus = 0
+equipment.defense_bonus = 0
+equipment.power_bonus = 0
+
+[[dummy.spawn_chances]] # spawn_chances can be added many times for various levels
+from_level = 998 # dungeon level
+probability_weight = 0 # score for random distribution, min - 0 (never), max - 10 (very common)
+
+[[dummy.spawn_chances]]
+from_level = 999
+probability_weight = 0
+
+
+[medkit]
+map_object.name = "Аптечка"
+item.kind = "Medkit"
+symbol.glyph = "\u0120"
+symbol.color = { r = 127, g = 78, b = 77 }
+
+[[medkit.spawn_chances]]
+from_level = 1
+probability_weight = 7
+
+
+[future_unknown_damager]
+map_object.name = "???"
+item.kind = "FutureUnknownDamager"
+symbol.glyph = "\u00FF"
+symbol.color = { r = 92, g = 87, b = 82 }
+
+[[future_unknown_damager.spawn_chances]]
+from_level = 4
+probability_weight = 0
+
+
+[blasting_cartridge]
+map_object.name = "Подрывной заряд"
+item.kind = "BlastingCartridge"
+symbol.glyph = "\u0122"
+symbol.color = { r = 92, g = 87, b = 82 }
+
+[[blasting_cartridge.spawn_chances]]
+from_level = 6
+probability_weight = 5
+
+
+[brick]
+map_object.name = "Кирпич"
+item.kind = "Brick"
+symbol.glyph = "\u0123"
+symbol.color = { r = 92, g = 87, b = 82 }
+
+[[brick.spawn_chances]]
+from_level = 2
+probability_weight = 2
+
+
+[pipe]
+map_object.name = "Труба"
+item.kind = "Melee"
+symbol.glyph = "\u0124"
+symbol.color = { r = 92, g = 87, b = 82 }
+equipment.slot = "Hands"
+equipment.max_hp_bonus = 0
+equipment.defense_bonus = 0
+equipment.power_bonus = 2
+
+
+[pickaxe]
+map_object.name = "Кирка"
+item.kind = "Melee"
+symbol.glyph = "\u0125"
+symbol.color = { r = 104, g = 127, b = 139 }
+equipment.slot = "Hands"
+equipment.max_hp_bonus = 0
+equipment.defense_bonus = 0
+equipment.power_bonus = 3
+
+[[pickaxe.spawn_chances]]
+from_level = 4
+probability_weight = 1
+
+
+[workwear]
+map_object.name = "Спецодежда"
+item.kind = "Melee"
+symbol.glyph = "\u0126"
+symbol.color = { r = 104, g = 127, b = 139 }
+equipment.slot = "Body"
+equipment.max_hp_bonus = 0
+equipment.defense_bonus = 1
+equipment.power_bonus = 0
+
+[[workwear.spawn_chances]]
+from_level = 8
+probability_weight = 3
+
+
+[steel_balls]
+map_object.name = "Стальной шарик"
+item.kind = "Ammo"
+ammo.kind = "SlingshotAmmo"
+ammo.count = 999
+symbol.glyph = "\u0121"
+symbol.color = { r = 92, g = 87, b = 82 }
+equipment.slot = "Ammo"
+equipment.max_hp_bonus = 0
+equipment.defense_bonus = 0
+equipment.power_bonus = 2
+
+[[steel_balls.spawn_chances]]
+from_level = 1
+probability_weight = 0
