@@ -17,8 +17,8 @@ pub fn update(world: &mut game::World) {
                Характеристики......C\n\
                Выбросить предмет...D\n\
                Передвижение........стрелки, Home,\n\
-               \x20                    End, Page Up,\n\
-               \x20                    Page Down,\n\
-               \x20                    Numpad";
+               \x20                   End, Page Up,\n\
+               \x20                   Page Down,\n\
+               \x20                   Numpad";
     world.add_dialog_box(DialogKind::MessageBox, String::from(msg), vec![], 36);
 }
