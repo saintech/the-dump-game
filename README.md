@@ -4,8 +4,6 @@
 
 **The Dump** - будущий олдскульный сюжетный рогалик в Sci-fi сеттинге про чувака, который очнулся на свалке и пытается выбраться наружу, попутно моча роботов и диких тварей.
 
-Игра находится на ранней стадии разработки.
-
 ## Download/Скачать
 
 * [Windows (64 bit)](https://github.com/saintech/the-dump-game/releases/latest/download/the-dump-game-x86_64-pc-windows-msvc.zip)
