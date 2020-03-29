@@ -4,7 +4,9 @@ cache: cargo
 if: tag IS present
 
 env:
-  global: EXECUTABLE_NAME=the-dump-game
+  global:
+    - EXECUTABLE_NAME=the-dump-game
+    - GAMEDIR="The Dump"
 
 matrix:
   include:
@@ -39,14 +41,14 @@ script:
   - cargo build --release --target $TARGET
 
 before_deploy: |
-  mkdir $EXECUTABLE_NAME
-  mv target/$TARGET/release/$EXECUTABLE_NAME$EXECUTABLE_EXTENTION $EXECUTABLE_NAME
-  mv target/$TARGET/release/build/*/out/*$LIBRARY_EXTENTION $EXECUTABLE_NAME
-  mv assets/ $EXECUTABLE_NAME/assets/
-  mv *.png $EXECUTABLE_NAME
-  if [ $TARGET == 'x86_64-pc-windows-msvc' ]; then mv debug_mode.bat $EXECUTABLE_NAME; fi
-  $ARCHIVE_CMD $EXECUTABLE_NAME-$TARGET$ARCHIVE_EXTENTION $EXECUTABLE_NAME
-  ls -la $EXECUTABLE_NAME
+  mkdir $GAMEDIR
+  mv target/$TARGET/release/$EXECUTABLE_NAME$EXECUTABLE_EXTENTION $GAMEDIR
+  mv target/$TARGET/release/build/*/out/*$LIBRARY_EXTENTION $GAMEDIR
+  mv assets/ $GAMEDIR/assets/
+  mv *.png $GAMEDIR
+  if [ $TARGET == 'x86_64-pc-windows-msvc' ]; then mv debug_mode.bat $GAMEDIR; fi
+  $ARCHIVE_CMD $EXECUTABLE_NAME-$TARGET$ARCHIVE_EXTENTION $GAMEDIR
+  ls -la $GAMEDIR
 
 deploy:
   api_key: $GITHUB_ACCESS_TOKEN
