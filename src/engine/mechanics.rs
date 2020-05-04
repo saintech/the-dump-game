@@ -65,7 +65,10 @@ pub fn equip(id: u32, world: &mut game::World) {
         if !equipment.equipped {
             equipment.equipped = true;
             let slot = equipment.slot;
-            world.add_log(cfg::COLOR_GREEN, format!("{} было использовано в {}.", name, slot));
+            world.add_log(
+                cfg::COLOR_GREEN,
+                format!("{} было использовано в {}.", name, slot),
+            );
         }
     } else {
         world.add_log(

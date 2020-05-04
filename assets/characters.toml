@@ -67,7 +67,7 @@ character.on_death = "Enemy"
 ai = "Basic"
 
 [[rat.spawn_chances]]
-from_level = 3
+from_level = 4
 probability_weight = 1
 
 [[rat.spawn_chances]]

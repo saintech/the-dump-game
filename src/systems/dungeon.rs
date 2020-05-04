@@ -221,8 +221,8 @@ fn place_objects(
     // maxumum number of monsters per room
     let max_monsters = from_dungeon_level(
         &[
-            Transition { level: 1, value: 2 },
-            Transition { level: 4, value: 3 },
+            Transition { level: 1, value: 3 },
+            Transition { level: 4, value: 4 },
             Transition { level: 6, value: 5 },
         ],
         level,
@@ -259,7 +259,8 @@ fn place_objects(
         level,
     );
     // choose random number of items
-    let num_items = rng.gen_range(0, max_items + 1);
+    let min_items = rng.gen_range(0, 2);
+    let num_items = rng.gen_range(min_items, max_items + 1);
     let (item_ids, item_chances) = items_loader.weighted_table(level);
     let item_choice = WeightedIndex::new(item_chances).unwrap();
     for _ in 0..num_items {

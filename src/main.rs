@@ -23,7 +23,7 @@ fn main() {
     let mut tcod = game::Tcod {
         root,
         con: console::Offscreen::new(cfg::MAP_WIDTH, cfg::MAP_HEIGHT),
-        panel: console::Offscreen::new(cfg::SCREEN_WIDTH, cfg::PANEL_HEIGHT),
+        panel: console::Offscreen::new(cfg::PANEL_WIDTH, cfg::SCREEN_HEIGHT),
     };
     let mut fov = tcod::map::Map::new(1, 1);
     let mut world: game::World = Default::default();

@@ -4,16 +4,12 @@ use tcod::colors;
 pub const SCREEN_WIDTH: i32 = 68;
 pub const SCREEN_HEIGHT: i32 = 35;
 // size of the map
-pub const MAP_WIDTH: i32 = 68;
-pub const MAP_HEIGHT: i32 = 29;
+pub const MAP_WIDTH: i32 = 39;
+pub const MAP_HEIGHT: i32 = 33;
 
 // sizes and coordinates relevant for the GUI
-pub const BAR_WIDTH: i32 = 20;
-pub const PANEL_HEIGHT: i32 = 7;
-pub const PANEL_Y: i32 = SCREEN_HEIGHT - PANEL_HEIGHT + 1;
-pub const MSG_X: i32 = BAR_WIDTH + 2;
-pub const MSG_WIDTH: i32 = SCREEN_WIDTH - BAR_WIDTH - 3;
-pub const MSG_HEIGHT: i32 = PANEL_HEIGHT - 1;
+pub const PANEL_WIDTH: i32 = 29;
+pub const MOUSE_LOOK_MIN_HEIGHT: i32 = 2;
 pub const INVENTORY_WIDTH: i32 = 40;
 pub const CHARACTER_SCREEN_WIDTH: i32 = 30;
 pub const LEVEL_SCREEN_WIDTH: i32 = 40;
@@ -23,7 +19,7 @@ pub const ROOM_MAX_SIZE: i32 = 10;
 pub const ROOM_MIN_SIZE: i32 = 6;
 pub const MAX_ROOMS: usize = 30;
 
-pub const HEAL_AMOUNT: i32 = 40;
+pub const HEAL_AMOUNT: i32 = 30;
 pub const SLINGSHOT_DAMAGE: i32 = 40;
 pub const SLINGSHOT_RANGE: i32 = 5;
 pub const BRICK_RANGE: f32 = 8.0;

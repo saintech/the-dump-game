@@ -4,17 +4,18 @@ use crate::engine::game;
 use tcod::console::TcodString;
 use tcod::{colors, console, Console as _};
 
+#[derive(Clone)]
 struct ANSICyrString(Vec<u8>);
 
 impl ANSICyrString {
     pub fn new(s: &str) -> Self {
         let mapped_chars = s.chars().map(|ch| {
             let ch = ch as u32;
-            if let 0x410...0x43F = ch {
+            if let 0x410..=0x43F = ch {
                 (ch - 0x390) as u8
-            } else if let 0x43F...0x44F = ch {
+            } else if let 0x43F..=0x44F = ch {
                 (ch - 0x350) as u8
-            } else if let 0x00...0xFF = ch {
+            } else if let 0x00..=0xFF = ch {
                 ch as u8
             } else {
                 0xFF
@@ -38,6 +39,8 @@ impl TcodString for ANSICyrString {
 
 pub fn update(world: &mut game::World, tcod: &mut game::Tcod) {
     if !world.map.is_empty() {
+        tcod.root.set_default_background(cfg::COLOR_DARK_GROUND_BG);
+        tcod.root.clear();
         render_map(world, &mut tcod.con);
         render_map_objects(world, &mut tcod.con);
         // blit the contents of "con" to the root console
@@ -46,7 +49,7 @@ pub fn update(world: &mut game::World, tcod: &mut game::Tcod) {
             (0, 0),
             (cfg::MAP_WIDTH, cfg::MAP_HEIGHT),
             &mut tcod.root,
-            (0, 0),
+            (0, 1),
             1.0,
             1.0,
         );
@@ -59,9 +62,9 @@ pub fn update(world: &mut game::World, tcod: &mut game::Tcod) {
         console::blit(
             &tcod.panel,
             (0, 0),
-            (cfg::SCREEN_WIDTH, cfg::PANEL_HEIGHT),
+            (cfg::PANEL_WIDTH, cfg::SCREEN_HEIGHT),
             &mut tcod.root,
-            (0, cfg::PANEL_Y),
+            (cfg::SCREEN_WIDTH - cfg::PANEL_WIDTH, 0),
             1.0,
             1.0,
         );
@@ -150,21 +153,21 @@ fn render_panel(world: &game::World, con: &mut impl console::Console) {
     con.set_default_background(cfg::COLOR_DARKEST_GREY);
     con.clear();
     // print the game messages, one line at a time
-    let mut y = cfg::MSG_HEIGHT;
+    let mut y = cfg::SCREEN_HEIGHT - 1;
     for &LogMessage(ref msg, color) in world.log.iter().rev() {
         let msg_height = con.get_height_rect(
-            cfg::MSG_X,
-            cfg::MSG_HEIGHT - y,
-            cfg::MSG_WIDTH,
+            1,
+            cfg::SCREEN_HEIGHT - 1 - y,
+            cfg::PANEL_WIDTH - 2,
             0,
             ANSICyrString::new(msg),
         );
         y -= msg_height;
-        if y < 0 {
+        if y < (3 + cfg::MOUSE_LOOK_MIN_HEIGHT + 1) {
             break;
         }
         con.set_default_foreground(color);
-        con.print_rect(cfg::MSG_X, y, cfg::MSG_WIDTH, 0, ANSICyrString::new(msg));
+        con.print_rect(1, y, cfg::PANEL_WIDTH - 2, 0, ANSICyrString::new(msg));
     }
     // show the player's stats
     let hp = world.player_char().hp;
@@ -172,8 +175,8 @@ fn render_panel(world: &game::World, con: &mut impl console::Console) {
     render_bar(
         con,
         1,
-        2,
-        cfg::BAR_WIDTH,
+        1,
+        cfg::PANEL_WIDTH - 2,
         "HP",
         hp,
         max_hp,
@@ -182,20 +185,28 @@ fn render_panel(world: &game::World, con: &mut impl console::Console) {
     );
     con.print_ex(
         1,
-        1,
+        2,
         console::BackgroundFlag::None,
         console::TextAlignment::Left,
         ANSICyrString::new(&format!("Локация: {}", world.player.dungeon_level)),
     );
     // display names of objects under the mouse
     con.set_default_foreground(cfg::COLOR_LIGHTEST_GREY);
-    con.print_rect(
-        1,
-        3,
-        cfg::BAR_WIDTH,
-        0,
-        ANSICyrString::new(&(String::from("Вы видите: ") + &get_names_under_mouse(world))),
-    );
+    let mouse_look_msg =
+        ANSICyrString::new(&(String::from("Вы видите: ") + &get_names_under_mouse(world)));
+    let mouse_look_height =
+        con.get_height_rect(1, 3, cfg::PANEL_WIDTH - 2, 0, mouse_look_msg.clone());
+    if mouse_look_height > cfg::MOUSE_LOOK_MIN_HEIGHT {
+        con.rect(
+            1,
+            3,
+            cfg::PANEL_WIDTH - 2,
+            mouse_look_height + 1,
+            true,
+            console::BackgroundFlag::None,
+        );
+    }
+    con.print_rect(1, 3, cfg::PANEL_WIDTH - 2, 0, mouse_look_msg);
 }
 
 fn render_bar(
@@ -240,15 +251,10 @@ fn get_names_under_mouse(world: &game::World) -> String {
             .map(|(_, _, map_obj, ..)| map_obj.name.clone())
             .collect();
     }
-    let max_len = 4;
-    match names.len() {
-        0 => String::from("ничего необычного"),
-        l if l >= max_len => {
-            names.truncate(max_len - 1);
-            names.join(", ") + " и еще..."
-        }
-        _ => names.join(", "),
+    if names.is_empty() {
+        names.push(String::from("ничего необычного"));
     }
+    names.join(", ")
 }
 
 fn render_dialogs(world: &game::World, destination_console: &mut impl console::Console) {
@@ -268,7 +274,13 @@ fn render_dialogs(world: &game::World, destination_console: &mut impl console::C
         let header_height = if header.is_empty() {
             -1
         } else {
-            destination_console.get_height_rect(0, 0, width - 2, cfg::SCREEN_HEIGHT - 2, ANSICyrString::new(header))
+            destination_console.get_height_rect(
+                0,
+                0,
+                width - 2,
+                cfg::SCREEN_HEIGHT - 2,
+                ANSICyrString::new(header),
+            )
         };
         let height = if options.len() > 0 {
             header_height + options.len() as i32 + 3

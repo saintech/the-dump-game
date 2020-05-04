@@ -55,7 +55,7 @@ pub fn update(world: &mut game::World) {
 }
 
 fn cell_in_fov(world: &game::World, x: i32, y: i32) -> bool {
-    if (x >= cfg::MAP_WIDTH) || (y >= cfg::MAP_HEIGHT) {
+    if (x >= cfg::MAP_WIDTH) || (y >= cfg::MAP_HEIGHT) || (x < 0) || (y < 0) {
         return false;
     }
     let index_in_map = (y * cfg::MAP_WIDTH + x) as usize;
